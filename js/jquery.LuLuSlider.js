@@ -1,7 +1,8 @@
 (function( $ ) {
     $.fn.LuLuSlider = function(options) {
 
-
+        // un comentariu de test pt victor 
+        
         var settings    = $.extend( {
             loadButtons : false,
             navButtons  : '.nav-buttons'

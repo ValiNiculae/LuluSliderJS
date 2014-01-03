@@ -14,50 +14,39 @@
 			slideWidth: 0,
 			currentSlide: 0,
 			totalSlides: 0,
+			canChangeSlide: true,
 
 			init: function (slider) {
 				var _self = this;
 				_self.slideContainer = slider;
 				_self.slideWidth = $(_self.slideContainer).find('ul li').eq(0).outerWidth(true);
-				_self.totalSlides = $(_self.slideContainer).find('ul li').length;
-
-				console.log(_self.totalSlides);
+				_self.totalSlides = $(_self.slideContainer).find('ul li').length - 1; // 0 index
 
 				$(_self.slideContainer).find( settings.navArrow ).click(function (e) {
 					e.preventDefault();
 
-					if ($(this).hasClass('left')) {
-						_self.nextSlide();
-					}else{
-						_self.prevSlide();
+					if(_self.canChangeSlide == true){
+						_self.changeSlide( $(this).data('direction') );
+						_self.canChangeSlide = false;
 					}
 				});
 			},
-			nextSlide: function () {
-				var _self = this;
 
-				if( _self.currentSlide + 1 == _self.totalSlides){
-					_self.currentSlide = 0;
+			changeSlide: function (direction) {
+				var _self = this;
+				if( direction == 'left'){
+					_self.currentSlide = (_self.currentSlide - 1 < 0 ) ? _self.totalSlides : _self.currentSlide - 1;
 				}else{
-					_self.currentSlide++;
+					_self.currentSlide = (_self.currentSlide + 1 > _self.totalSlides ) ? 0 : _self.currentSlide + 1;
 				}
 
 				$(_self.slideContainer).find('ul').animate({
 					marginLeft: -_self.slideWidth * _self.currentSlide
+				},function () {
+					_self.canChangeSlide = true;
 				});
 			},
-			prevSlide: function () {
-				var _self = this;
-				if( _self.currentSlide - 1 < 0 ){
-					_self.currentSlide = _self.totalSlides;
-				}else{
-					_self.currentSlide--;
-				}
 
-				$(_self.slideContainer).find('ul').animate({
-					marginLeft: -_self.slideWidth * _self.currentSlide
-				});
-			}
 		};
 
 

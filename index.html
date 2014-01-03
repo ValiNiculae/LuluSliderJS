@@ -9,62 +9,43 @@
 <body>
 
 <section class="wrapper">
-    <div id="slider">
-        <ul>
-            <li>slide 1 text</li>
-            <li>slide 2 text</li>
-            <li>slide 3 text</li>
-        </ul>
+	<div id="main-slider" class="slider">
+		<div class="slider-wrapper">
+			<ul>
+				<li>Continut slide 1</li>
+				<li>Continut slide 2</li>
+				<li>Continut slide 3</li>
+				<li>Continut slide 4</li>
+				<li>Continut slide 5</li>
+			</ul>
+		</div>
 
-        <div class="nav-arrows">
-            <a href="#" class="prev">&lt;</a>
-            <a href="#" class="next">&gt;</a>
-        </div>
+		<a href="#" class="arrow left" data-direction="left"> &laquo; </a>
+		<a href="#" class="arrow right" data-direction="right"> &raquo; </a>
+	</div><!-- /#main-slider -->
 
-        <div class="nav-buttons">
-            <span data-slide="0"></span>
-            <span data-slide="1"></span>
-            <span data-slide="2"></span>
-        </div>
-    </div>
+
+	<div id="test-slider" class="slider">
+		<div class="slider-wrapper">
+			<ul>
+				<li>Continut slide 1</li>
+				<li>Continut slide 2</li>
+				<li>Continut slide 3</li>
+			</ul>
+		</div>
+
+		<a href="#" class="arrow left" data-direction="left"> &laquo; </a>
+		<a href="#" class="arrow right" data-direction="right"> &raquo; </a>
+	</div><!-- /#test-slider -->
 </section>
 
-
-<section class="wrapper">
-    <div id="slider-two">
-        <ul>
-            <li>slide 1 text</li>
-            <li>slide 2 text</li>
-            <li>slide 3 text</li>
-        </ul>
-
-        <div class="nav-arrows">
-            <a href="#" class="prev">&lt;</a>
-            <a href="#" class="next">&gt;</a>
-        </div>
-
-        <div class="nav-buttons">
-            <span data-slide="0"></span>
-            <span data-slide="1"></span>
-            <span data-slide="2"></span>
-        </div>
-    </div>
-</section>
-
-WIP
-
-<a href="new_slides.html" id="load" data-target="#slider">Load</a>
 
 <script src="js/jquery.min.js"></script>
-<script src="js/LuLuSliderJS.js"></script>
-<script src="js/jquery.LuLuSlider.js"></script>
+<script src="js/jquery.LuluSlider.js"></script>
 <script>
 (function(){
-    // LuLuSliderJS.init('#slider');
-    // LuLuSliderJS.init('#slider-two');
-
-    $('#slider').LuLuSlider();
-    //$('#slider-two').LuLuSlider();
+    $('#main-slider').LuluSlider({ navButtons : 'valoare' });
+    $('#test-slider').LuluSlider({ navButtons : 'test' });
 
 })();
 </script>

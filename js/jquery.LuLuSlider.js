@@ -1,92 +1,71 @@
-(function( $ ) {
-    $.fn.LuLuSlider = function(options) {
+(function ($) {
+	"use strict";
 
-        // un comentariu de test pt victor 
-        
-        var settings    = $.extend( {
-            loadButtons : false,
-            navButtons  : '.nav-buttons'
+	$.fn.LuluSlider = function (options) {
+
+		var settings    = $.extend( {
+            navArrow : '.arrow',
+//            navButtonsDiv  : '.arrow'
         }, options);
 
-        settings.current        = 0;
-        settings.total          = this.find('li').length;
-        settings.elementWidth   = this.find('li').outerWidth(true);
-        settings.$slider        = this;
 
-        var methods = {
-            init: function(){
+		var methods = {
+			slideContainer: '',
+			slideWidth: 0,
+			currentSlide: 0,
+			totalSlides: 0,
 
-                // Bind navigation arrows
-                settings.$slider.find('.nav-arrows a').bind('click', function() {
-                    ( $(this).hasClass('prev') ) ? settings.current-- : settings.current++;
-                    methods.goTo(settings.current);
-                    return false;
-                });
+			init: function (slider) {
+				var _self = this;
+				_self.slideContainer = slider;
+				_self.slideWidth = $(_self.slideContainer).find('ul li').eq(0).outerWidth(true);
+				_self.totalSlides = $(_self.slideContainer).find('ul li').length;
 
-                // Bind nav buttons 
-                settings.$slider.on('click', '.nav-buttons span', function() {
-                    methods.goTo( $(this).data('slide') );
-                });
+				console.log(_self.totalSlides);
 
-                // Bind ajax load buttons
-                if(settings.loadButtons) {
-                    $(settings.loadButtons).bind('click', function(){
-                        methods.load( $(this).attr('href'), methods.createNavButtons );
-                        return false;
-                    });
-                }
+				$(_self.slideContainer).find( settings.navArrow ).click(function (e) {
+					e.preventDefault();
 
-                methods.createNavButtons();
-            },
+					if ($(this).hasClass('left')) {
+						_self.nextSlide();
+					}else{
+						_self.prevSlide();
+					}
+				});
+			},
+			nextSlide: function () {
+				var _self = this;
 
-            goTo: function(slide){
-                if(slide >= settings.total){
-                    settings.current = 0;
-                }else if(slide < 0 ){
-                    settings.current = settings.total - 1;
-                }else{
-                    settings.current = slide;
-                }
+				if( _self.currentSlide + 1 == _self.totalSlides){
+					_self.currentSlide = 0;
+				}else{
+					_self.currentSlide++;
+				}
 
-                methods.markActive(settings.current);
-                settings.$slider.find('ul').animate({ marginLeft : -settings.current*settings.elementWidth});
-            },
+				$(_self.slideContainer).find('ul').animate({
+					marginLeft: -_self.slideWidth * _self.currentSlide
+				});
+			},
+			prevSlide: function () {
+				var _self = this;
+				if( _self.currentSlide - 1 < 0 ){
+					_self.currentSlide = _self.totalSlides;
+				}else{
+					_self.currentSlide--;
+				}
 
-            markActive: function(slide){
-                settings.$slider.find('.nav-buttons span').removeClass('active');
-                settings.$slider.find('.nav-buttons span').eq(slide).addClass('active');   
-            },
+				$(_self.slideContainer).find('ul').animate({
+					marginLeft: -_self.slideWidth * _self.currentSlide
+				});
+			}
+		};
 
-            load: function(targetUrl, callback){
-                $.ajax({
-                    type: "GET",
-                    url: targetUrl,
-                    cache: false
-                }).success(function( response ) {
-                    // fade out and remove current list elements
-                    // fade in new elements, recount them and recreate the bullet buttons
-                    settings.$slider.find('ul').fadeOut(function() {
-                        $(this).css('margin-left','0').empty().append( response ).fadeIn();
-                        callback();
-                    });
-                });                
-            },
 
-            createNavButtons: function() {
-                // delete all buttons
-                settings.$slider.find( settings.navButtons ).empty();
+		return this.each(function() {
 
-                // buttons for every slide
-                var elements = settings.$slider.find('li');
-                settings.total = elements.length; //recount slide number
-                elements.each(function( index ) {
-                    $('<span data-slide="' + index + '"></span>').appendTo( settings.$slider.find( settings.navButtons ) );
-                });
-                methods.goTo(0);
-            }
-        }
+			methods.init(this);
 
-        methods.init();
-
-    };
-})( jQuery );
+			return this; // Let's not break the jQuery chain
+		});
+	}
+})(jQuery)
